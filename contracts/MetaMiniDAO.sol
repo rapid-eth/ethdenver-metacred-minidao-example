@@ -5,12 +5,14 @@ import "./MetaWrapper.sol";
 
 contract MetaMiniDAO is MiniDAO, MetaWrapper {
 
-    constructor(address _metaProxy) MetaWrapper(_metaProxy) public { }
+    constructor(address _metaProxy) MetaWrapper(_metaProxy) public {
+        owner = msg.sender;
+    }
 
     address public owner;
 
     modifier onlyOwner() {
-        require(getSender() != owner, "onlyOwner");
+        require(getSender() == owner, "onlyOwner");
         _;
     }
 

@@ -19,6 +19,7 @@ contract MiniDAO {
 
     function join() public {
         address sender = getSender();
+        require(members[sender] == false, "already a member");
         members[sender] = true;
         totalMembers++;
         emit MemberJoined(sender);
@@ -26,6 +27,7 @@ contract MiniDAO {
 
     function quit() public {
         address sender = getSender();
+        require(members[sender] == true, "not a member");
         members[sender] = false;
         totalMembers--;
         emit MemberQuit(sender);
@@ -38,6 +40,8 @@ contract MiniDAO {
         proposals[pId].data = _data;
         proposals[pId].voteCount++;
         proposals[pId].voted[sender] = true;
+
+        emit ProposalSubmitted(sender, pId, _data);
     }
 
     function voteForProposal(bytes32 _id) public {
@@ -54,7 +58,7 @@ contract MiniDAO {
 
     event MemberJoined(address indexed member);
     event MemberQuit(address indexed member);
-    event ProposalSubmitted(address indexed submitter, bytes32 indexed proposalId);
+    event ProposalSubmitted(address indexed submitter, bytes32 indexed proposalId, string text);
 
 
 
