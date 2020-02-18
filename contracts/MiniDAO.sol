@@ -40,6 +40,7 @@ contract MiniDAO {
         proposals[pId].data = _data;
         proposals[pId].voteCount++;
         proposals[pId].voted[sender] = true;
+        totalProposals++;
 
         emit ProposalSubmitted(sender, pId, _data);
     }
